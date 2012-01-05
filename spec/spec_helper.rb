@@ -14,9 +14,10 @@ class DummyFileUtils
   end
 end
 
-#require 'vcr'
-#
-#VCR.configure do |c|
-#  c.cassette_library_dir = 'vcr_cassettes'
-#  c.hook_into :webmock
-#end
+require 'vcr'
+
+VCR.configure do |c|
+  c.cassette_library_dir = 'spec/cassettes'
+  c.hook_into :fakeweb
+end
+

@@ -1,38 +1,42 @@
+require_relative 'spec_helper'
+
 require 'minitest/spec'
 require 'minitest/autorun'
 
-require 'vcr'
-
 describe "GetEpisodeNames" do
-  #before do
-  #  VCR.insert_cassette 'tvdb'
-  #end
-
-  #after do
-  #  VCR.eject_cassette
-  #end
 
   it "takes the name of the series" do
     series_name = "Burn Notice"
 
-    SeriesNamer::GetEpisodeNames.new(series_name).series_name.must_equal series_name
+    VCR.use_cassette('burn_notice') do
+      SeriesNamer::GetEpisodeNames.new(series_name).series_name.must_equal series_name
+    end
   end
 
   it "validates that the series exists" do
-    series_name = "Burn Notice"
-    SeriesNamer::GetEpisodeNames.new(series_name).series_info.name.must_equal series_name
+    VCR.use_cassette('burn_notice') do
+      series_name = "Burn Notice"
+      SeriesNamer::GetEpisodeNames.new(series_name).series_info.name.must_equal series_name
+    end
 
-    series_name = "The Sampsons"
-    proc {SeriesNamer::GetEpisodeNames.new(series_name)}.must_raise ArgumentError
+  end
+
+  it "throws an exception if the series does not exist" do
+    VCR.use_cassette('sampsons') do
+      series_name = "The Sampsons"
+      proc {SeriesNamer::GetEpisodeNames.new(series_name)}.must_raise ArgumentError
+    end
   end
 
   it "returns the name of an episode for a season" do
     series_name = "Burn Notice"
     season = 1
     episode = 3
-    series_info = SeriesNamer::GetEpisodeNames.new(series_name)
 
-    series_info.episode_name(season, episode).must_equal "Fight or Flight"
+    VCR.use_cassette('burn_notice_episode_1_3') do
+      series_info = SeriesNamer::GetEpisodeNames.new(series_name)
+      series_info.episode_name(season, episode).must_equal "Fight or Flight"
+    end
   end
 
   it "throws an error if the episode doesn't exist for a season" do
@@ -41,7 +45,9 @@ describe "GetEpisodeNames" do
     episode = 33
     series_info = SeriesNamer::GetEpisodeNames.new(series_name)
 
-    proc {series_info.episode_name(season, episode)}.must_raise ArgumentError
+    VCR.use_cassette('burn_notice_episode_1_33') do
+      proc {series_info.episode_name(season, episode)}.must_raise ArgumentError
+    end
   end
 end
 
@@ -59,7 +65,12 @@ module SeriesNamer
     end
 
     def episode_name( season, episode )
-      episode_info = @series_info.get_episode(season, episode)
+      begin
+        episode_info = @series_info.get_episode(season, episode)
+      rescue VCR::Errors::UnhandledHTTPRequestError, SocketError
+        episode_info = nil
+      end
+
 
       raise ArgumentError, "Episode #{episode} Season #{season} not found." if episode_info.nil?
 
@@ -67,13 +78,17 @@ module SeriesNamer
     end
 
     def episode_names( season )
-      
+      raise NotImplementedError
     end
 
     private
 
     def setup_client( tvdb_client )
-      results = tvdb_client.search(@series_name).first
+      begin
+        results = tvdb_client.search(@series_name).first
+      rescue VCR::Errors::UnhandledHTTPRequestError, SocketError
+        results = nil
+      end
 
       raise ArgumentError, @series_name.to_s + " was not found" if results.nil?
 
