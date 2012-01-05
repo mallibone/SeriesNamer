@@ -6,6 +6,6 @@ source "http://rubygems.org"
 gem "tvdb_party"
 
 group :development, :test do
-  gem "vcr"
-  gem 'webmock'
+  gem "vcr", "~> 2.0.0.rc1"
+  gem 'fakeweb'
 end
