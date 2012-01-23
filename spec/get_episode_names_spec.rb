@@ -35,7 +35,7 @@ describe "GetEpisodeNames" do
 
     VCR.use_cassette('burn_notice_episode_1_3') do
       series_info = SeriesNamer::GetEpisodeNames.new(series_name)
-      series_info.episode_name(season, episode).must_equal "Fight or Flight"
+      series_info.episode_name(season, episode).must_equal "S01E03 Fight or Flight"
     end
   end
 
@@ -74,7 +74,10 @@ module SeriesNamer
 
       raise ArgumentError, "Episode #{episode} Season #{season} not found." if episode_info.nil?
 
-      return episode_info.name
+      episode_name = "S" + "%02d" % season + "E" + "%02d" % episode + " "
+      episode_name << episode_info.name
+
+      return episode_name
     end
 
     def episode_names( season )
@@ -98,15 +101,5 @@ module SeriesNamer
     end
 
   end
-end
-
-class DummyTvdbParty
-  def search( series_name)
-    return @burn_notice if series_name.lower_case == "burn notice"
-    return nil
-  end
-
-  @burn_notice = {"seriesid"=>"80270", "language"=>"en", "SeriesName"=>"Burn Notice", "banner"=>"graphical/80270-g12.jpg", "Overview"=>"Covert intelligence operative Michael Westen has been punched, kicked, choked and shot. Now he's being burned, and someone's going to pay! When Michael receives a \"burn notice\", blacklisting him from the intelligence community and compromising his very identity, he must track down a faceless nemesis without getting himself killed in the process. Meanwhile, Michael is forced to double as a private investigator on the dangerous streets of Miami in order to survive. Fully loaded with sly humor, Burn Notice is a fresh spin on the spy genre with plenty of precarious twists to keep you guessing and enough explosive action to keep you riveted!", "FirstAired"=>"2007-06-28", "IMDB_ID"=>"tt0810788", "zap2it_id"=>"EP00924844", "id"=>"80270"}
-
 end
 

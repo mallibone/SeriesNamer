@@ -3,13 +3,14 @@ module SeriesNamer
   require_relative 'validation/path'
   class ParsePath
     attr_reader :series_info
+    @directory
 
-    def initialize( path, path_verifier = Validation::Path )
+    def initialize( path, directory = Dir )
+
+      @directory = directory
 
       # If invalid raises an exception
-      path_verifier.exists?( path )
-
-      path = path
+      raise ArgumentError, "Path #{path} doesn't exist." unless path_valid?(path)
 
       series = File.basename( File.dirname( path ) )
 
@@ -17,6 +18,12 @@ module SeriesNamer
       seasons << File.basename(path)
 
       @series_info = SeriesInfo.new( path, series, seasons )
+    end
+
+    private
+
+    def path_valid?(path)
+      return @directory.exists?( path )
     end
   end
 end

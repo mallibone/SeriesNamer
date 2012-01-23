@@ -4,7 +4,7 @@ class DummyDir
   end
 
   def entries( path )
-    return ["foo", "test", "entries"]
+    return ["foo", "test", "entries", "season 1", "season 2", "season 23"]
   end
 end
 

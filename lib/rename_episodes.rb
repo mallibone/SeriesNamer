@@ -4,10 +4,14 @@ module SeriesNamer
     require 'fileutils'
 
     attr_reader :path, :current_names, :new_names
+    @directory # default Dir may be set differently for tests
 
-    def initialize( path, current_names, new_names, dir_check = Dir )
+    def initialize( path, current_names, new_names, directory = Dir )
+
+      @directory = directory
+
       # Raises ArgumentError if invalid
-      check_argument_validity( path, current_names, new_names, dir_check )
+      check_argument_validity( path, current_names, new_names )
 
       @path = path
 
@@ -24,8 +28,8 @@ module SeriesNamer
 
     private
 
-    def check_argument_validity( path, current_names, new_names, dir_check )
-      SeriesNamer::Validation::Path.exists?( path )
+    def check_argument_validity( path, current_names, new_names )
+      raise ArgumentError, "Path #{path} not found" unless @directory.exists?( path )
 
       unless current_names.length == new_names.length
         raise ArgumentError, "Expected equal length for current and new names"
@@ -35,11 +39,11 @@ module SeriesNamer
         raise ArgumentError, "Expected equal length for current and new names"
       end
 
-      check_episode_exists( path, current_names, dir_check )
+      check_episode_exists( path, current_names )
     end
 
-    def check_episode_exists( path, current_names, dir_check )
-      dir_entries = dir_check.entries( path )
+    def check_episode_exists( path, current_names )
+      dir_entries = @directory.entries( path )
       current_names.each do |e|
         unless  dir_entries.detect{|d| d == e}
           raise ArgumentError, "Could not find #{e} in #{path}"

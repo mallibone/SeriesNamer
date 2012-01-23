@@ -35,9 +35,16 @@ describe SeriesNamer::ParsePath do
   end
 
   it "looks for seasons if it isn't given in the path" do
-    #path = "series_name"
-    #SeriesNamer::ParsePath.new(path, DummyDir).seasons.must_equal DummyDir.entries
-    skip
+    path = "series_name"
+    expected_entries = ["season 1", "season 2", "season 23"]
+
+    dir_mock = MiniTest::Mock.new
+    dir_mock.expect(:exists?, true, path )
+    dir_mock.expect(:entries, expected_entries<< "gnabber", path)
+
+    assert dir_mock.verify
+
+    SeriesNamer::ParsePath.new(path, dir_mock).seasons.must_equal expected_entries
   end
 
   it "returns a list foreach season for the series"
