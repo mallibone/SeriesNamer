@@ -39,14 +39,12 @@ describe SeriesNamer::ParsePath do
     expected_entries = ["season 1", "season 2", "season 23"]
 
     dir_mock = MiniTest::Mock.new
-    dir_mock.expect(:exists?, true, path )
-    dir_mock.expect(:entries, expected_entries<< "gnabber", path)
+    dir_mock.expect(:exists?, true, [path] )
+    dir_mock.expect(:entries, Array.new(expected_entries) << "gnabber", [path])
 
-    assert dir_mock.verify
+    SeriesNamer::ParsePath.new(path, dir_mock).series_info.seasons.must_equal expected_entries
 
-    SeriesNamer::ParsePath.new(path, dir_mock).seasons.must_equal expected_entries
+    dir_mock.verify.must_equal true
   end
-
-  it "returns a list foreach season for the series"
 end
 
