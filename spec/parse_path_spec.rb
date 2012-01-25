@@ -40,7 +40,21 @@ describe SeriesNamer::ParsePath do
 
     dir_mock = MiniTest::Mock.new
     dir_mock.expect(:exists?, true, [path] )
-    dir_mock.expect(:entries, Array.new(expected_entries) << "gnabber", [path])
+    dir_mock.expect(:entries, Array.new(expected_entries), [path])
+
+    SeriesNamer::ParsePath.new(path, dir_mock).series_info.seasons.must_equal expected_entries
+
+    dir_mock.verify.must_equal true
+  end
+
+  it "ignores all entries that do not follow the season name pattern" do
+    path = "series_name"
+    expected_entries = ["season 1", "season 2", "season 23"]
+    given_entries = Array.new(expected_entries) << "gnabber" << "another invalid" << "season"
+
+    dir_mock = MiniTest::Mock.new
+    dir_mock.expect(:exists?, true, [path] )
+    dir_mock.expect(:entries, given_entries, [path])
 
     SeriesNamer::ParsePath.new(path, dir_mock).series_info.seasons.must_equal expected_entries
 
