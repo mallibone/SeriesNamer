@@ -31,7 +31,7 @@ describe "SeriesInfo" do
     end
   end
 
-  describe "Adding further content" do
+  describe "Adding original episode names" do
     it "is possible to add episodes" do
       episodes = ["episode1", "episode2"]
 
@@ -45,9 +45,28 @@ describe "SeriesInfo" do
       episode = "episode1"
 
       series_info = SeriesNamer::SeriesInfo.new( @path, @series, @seasons )
-      series_info.add_episode(@seasons.first, episode)
+      series_info.add_episodes(@seasons.first, episode)
 
       series_info.episodes( @seasons.first ).must_equal [episode]
+    end
+  end
+
+  describe "Adding new episode names" do
+    it "is possible to add new episode names" do
+      episodes = ["episode1", "episode2"]
+
+      series_info = SeriesNamer::SeriesInfo.new( @path, @series, @seasons )
+      series_info.add_new_episodes(@seasons.first, episodes)
+
+      series_info.new_episodes( @seasons.first ).must_equal episodes
+    end
+    it "is possible to add only one episode to a season" do
+      episode = "episode1"
+
+      series_info = SeriesNamer::SeriesInfo.new( @path, @series, @seasons )
+      series_info.add_new_episodes(@seasons.first, episode)
+
+      series_info.new_episodes( @seasons.first ).must_equal [episode]
     end
   end
 end
