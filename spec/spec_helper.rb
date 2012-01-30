@@ -32,6 +32,10 @@ class DummyFile
   def join( path_1, path_2)
     return File.join(path_1, path_2)
   end
+
+  def method_missing(name, *args, &block)
+    File.send(name, *args, &block)
+  end
 end
 
 require 'vcr'
