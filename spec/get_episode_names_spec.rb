@@ -54,4 +54,20 @@ describe "GetEpisodeNames" do
       proc {series_details.episode_name(season, episode)}.must_raise ArgumentError
     end
   end
+
+  it "is able to return a list of episode names if season and count are given" do
+    series_info = SeriesNamer::SeriesInfo.new("Burn Notice/Season 1", "Burn Notice", "Season 1")
+    episode_count = 11
+    season = 1
+
+    VCR.use_cassette('burn_notice_season1_all_episodes') do
+      series_info = SeriesNamer::GetEpisodeNames.new(series_info)
+      #series_info.episode_names(season, episode_count).must_equal ["S01E03 Fight or Flight"]
+      series_info.episode_names(season, episode_count).must_equal ["S01E01 Burn Notice", 
+        "S01E02 Identity", "S01E03 Fight or Flight", "S01E04 Old Friends", 
+        "S01E05 Family Business", "S01E06 Unpaid Debts", "S01E07 Broken Rules", 
+        "S01E08 Wanted Man", "S01E09 Hard Bargain", "S01E10 False Flag", 
+        "S01E11 Dead Drop (1)"]
+    end
+  end
 end
