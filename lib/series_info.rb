@@ -2,16 +2,12 @@ module SeriesNamer
   class SeriesInfo
     attr_reader :path, :series, :seasons
 
-    def initialize( path, series, seasons )
+    def initialize( path, series, *seasons )
       @path = path
       @series = series
 
       @seasons = Hash.new
-      if( seasons.kind_of?( Array ) )
-        seasons.each{ |season| @seasons[season] = Array.new }
-      else
-        @seasons[seasons] = Array.new
-      end
+      seasons.flatten.each{ |season| @seasons[season] = Array.new }
     end
 
     # Get all seasons
@@ -21,7 +17,7 @@ module SeriesNamer
 
     # Get all episodes for a season
     def episodes( season )
-      return @seasons[season]
+      return @seasons[season].flatten
     end
 
     # add multiple episdoes to a season
