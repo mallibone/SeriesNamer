@@ -24,6 +24,8 @@ module SeriesNamer
         renamed_episode = new_names[i]
         file_utils.mv(File.join(path, episode), File.join(path, renamed_episode))
       end
+
+      return @directory.entries(@path)
     end
 
     private
