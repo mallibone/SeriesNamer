@@ -21,7 +21,7 @@ module SeriesNamer
 
     def now( file_utils = FileUtils )
       current_names.each_with_index do |episode, i|
-        renamed_episode = new_names[i]
+        renamed_episode = new_names[i] + File.extname(episode)
         file_utils.mv(File.join(path, episode), File.join(path, renamed_episode))
       end
 

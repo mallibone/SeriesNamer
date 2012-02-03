@@ -66,5 +66,26 @@ describe "SeriesNamer::SeriesNamer::RenameEpisodes" do
 
     file_utils_mock.verify.must_equal true
   end
+
+  it "doesn't change the fileending" do
+    path = Dir.pwd
+    curr_name = ["foo.m4v"]
+    new_name = ["bar"]
+    expected_name = ["bar.m4v"]
+
+    dir_mock = MiniTest::Mock.new
+    dir_mock.expect(:exists?, true, [path])
+    dir_mock.expect(:entries, curr_name, [path])
+
+    file_utils_mock = MiniTest::Mock.new
+    file_utils_mock.expect(:mv, true, 
+                           [File.join(path, curr_name), File.join(path, expected_name)])
+
+    renamer = SeriesNamer::RenameEpisodes.new( path, curr_name, new_name, dir_mock )
+    renamer.now(file_utils_mock)
+
+    dir_mock.verify.must_equal true
+    file_utils_mock.verify.must_equal true
+  end
 end
 
