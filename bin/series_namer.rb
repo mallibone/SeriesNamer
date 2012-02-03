@@ -3,7 +3,7 @@
 require 'thor'
 require_relative '../lib/renamer'
 
-class Solitair < Thor
+class Rename < Thor
 
   desc "name path/series(/season XX)", "name episodes of given series"
   def name( path )
@@ -14,11 +14,14 @@ class Solitair < Thor
 
     # get list of episodes
     begin
-      Rename( path ).new.now
+      SeriesNamer::Renamer.new( path ).execute
       puts "","Thanks for all the fish!", ""
     rescue ArgumentError => error
       puts "", error.to_s
       puts "","Now I'm really depressed, something went wrong..",""
+#    rescue SocketError => error
+#      puts "", error.to_s
+#      puts "","Now I'm really depressed, something went wrong..",""
     end
 
   end
@@ -31,4 +34,4 @@ class Solitair < Thor
   end
 end
 
-Solitair.start
+Rename.start
