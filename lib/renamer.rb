@@ -3,6 +3,7 @@ module SeriesNamer
   require_relative 'find_episodes'
   require_relative 'get_episode_names'
   require_relative 'parse_path'
+  require_relative 'rename_episodes'
 
   class Renamer
 
