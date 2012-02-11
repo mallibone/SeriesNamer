@@ -1,7 +1,6 @@
 require 'minitest/spec'
 require 'minitest/autorun'
 
-require_relative '../lib/Validation/path'
 require_relative '../lib/rename_episodes'
 
 require_relative 'spec_helper'
