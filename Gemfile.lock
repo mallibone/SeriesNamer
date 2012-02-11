@@ -7,6 +7,8 @@ GEM
       multi_xml
     multi_json (1.0.4)
     multi_xml (0.4.1)
+    rake (0.9.2.2)
+    thor (0.14.6)
     tvdb_party (0.6.2)
       httparty (>= 0.6.1)
     vcr (2.0.0.rc1)
@@ -16,5 +18,7 @@ PLATFORMS
 
 DEPENDENCIES
   fakeweb
+  rake
+  thor
   tvdb_party
   vcr (~> 2.0.0.rc1)
