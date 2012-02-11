@@ -1,10 +1,10 @@
 module SeriesNamer
   require_relative 'series_info'
-  require_relative 'validation/path'
+
   class ParsePath
     attr_reader :series_info
-    @directory
-    @file
+    @directory = nil
+    @file = nil
 
     def initialize( path, directory = Dir, file = File )
 

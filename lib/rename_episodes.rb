@@ -4,7 +4,7 @@ module SeriesNamer
     require 'fileutils'
 
     attr_reader :path, :current_names, :new_names
-    @directory # default Dir may be set differently for tests
+    @directory = nil # default Dir may be set differently for tests
 
     def initialize( path, current_names, new_names, directory = Dir )
 

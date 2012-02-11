@@ -4,8 +4,8 @@ module SeriesNamer
 
     attr_reader :series_info
 
-    @directory  #usually defaults to Rubys Dir
-    @file       #usually defaults to Rubys File
+    @directory = nil  #usually defaults to Rubys Dir
+    @file = nil       #usually defaults to Rubys File
 
     def initialize( series_info, directory = Dir, file = File)
       unless directory.exists?( series_info.path )

@@ -33,7 +33,7 @@ describe "GetEpisodeNames" do
 
   it "returns the name of an episode for a season" do
     series_info = SeriesNamer::SeriesInfo.new("Burn Notice/Season 1", "Burn Notice", "Season 1")
-    series_name = "Burn Notice"
+    #series_name = "Burn Notice"
     season = 1
     episode = 3
 
@@ -45,7 +45,7 @@ describe "GetEpisodeNames" do
 
   it "throws an error if the episode doesn't exist for a season" do
     series_info = SeriesNamer::SeriesInfo.new("Burn Notice/Season 1", "Burn Notice", "Season 1")
-    series_name = "Burn Notice"
+    #series_name = "Burn Notice"
     season = 1
     episode = 33
     series_details = SeriesNamer::GetEpisodeNames.new(series_info)
