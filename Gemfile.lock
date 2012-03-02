@@ -11,7 +11,7 @@ GEM
     thor (0.14.6)
     tvdb_party (0.6.2)
       httparty (>= 0.6.1)
-    vcr (2.0.0.rc1)
+    vcr (2.0.0)
 
 PLATFORMS
   ruby
@@ -21,4 +21,4 @@ DEPENDENCIES
   rake
   thor
   tvdb_party
-  vcr (~> 2.0.0.rc1)
+  vcr

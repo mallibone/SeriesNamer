@@ -7,7 +7,7 @@ gem "tvdb_party"
 gem "thor"
 
 group :development, :test do
-  gem "vcr", "~> 2.0.0.rc1"
+  gem "vcr"
   gem 'fakeweb'
   gem "rake"
 end
