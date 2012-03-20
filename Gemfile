@@ -5,9 +5,9 @@ source "http://rubygems.org"
 #
 gem "tvdb_party"
 gem "thor"
+gem "rake", '~> 0.9'
 
 group :development, :test do
-  gem "vcr"
-  gem 'fakeweb'
-  gem "rake"
+  gem "vcr", '~>2.0.0'
+  gem 'webmock', '~>1.8.3'
 end
